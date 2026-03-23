@@ -1,0 +1,9 @@
+{
+  "nav": { "worldWall": "World Wall", "discover": "Discover", "invitationHall": "Invitation Hall", "messages": "Messages", "profile": "Profile", "admin": "Admin" },
+  "auth": { "signIn": "Sign In", "signUp": "Sign Up", "email": "Email", "password": "Password", "manufacturer": "Manufacturer", "designer": "Designer", "role": "I am a", "createAccount": "Create Account", "haveAccount": "Already have an account?", "noAccount": "Don't have an account?", "companyName": "Company Name", "fullName": "Full Name" },
+  "worldWall": { "title": "World Wall", "subtitle": "Discover the latest from verified manufacturers and designers", "post": "Post", "writePost": "Share something with the community...", "likes": "likes", "comments": "comments", "follow": "Follow", "following": "Following", "verified": "Verified Manufacturer" },
+  "invitationHall": { "title": "Invitation Hall", "subtitle": "Post your project needs or find opportunities", "postRFP": "Post a Project", "budget": "Budget", "timeline": "Timeline", "respond": "Respond", "responses": "Responses", "shortlist": "Shortlist", "open": "Open", "closed": "Closed" },
+  "profile": { "manufacturer": "Manufacturer", "designer": "Designer", "verified": "Verified", "pendingVerification": "Pending Verification", "editProfile": "Edit Profile", "products": "Products", "portfolio": "Portfolio", "about": "About", "contact": "Contact" },
+  "admin": { "auditQueue": "Audit Queue", "pending": "Pending", "approved": "Approved", "rejected": "Rejected", "review": "Review", "approve": "Approve", "reject": "Reject" },
+  "common": { "search": "Search", "loading": "Loading...", "error": "Something went wrong", "save": "Save", "cancel": "Cancel", "submit": "Submit", "back": "Back", "viewAll": "View All", "learnMore": "Learn More" }
+}

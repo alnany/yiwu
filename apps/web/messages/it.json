@@ -1,0 +1,9 @@
+{
+  "nav": { "worldWall": "Muro Mondiale", "discover": "Scopri", "invitationHall": "Sala Inviti", "messages": "Messaggi", "profile": "Profilo", "admin": "Admin" },
+  "auth": { "signIn": "Accedi", "signUp": "Registrati", "email": "Email", "password": "Password", "manufacturer": "Produttore", "designer": "Designer", "role": "Sono un", "createAccount": "Crea Account", "haveAccount": "Hai già un account?", "noAccount": "Non hai un account?", "companyName": "Nome Azienda", "fullName": "Nome Completo" },
+  "worldWall": { "title": "Muro Mondiale", "subtitle": "Scopri le ultime novità da produttori e designer verificati", "post": "Pubblica", "writePost": "Condividi qualcosa con la comunità...", "likes": "mi piace", "comments": "commenti", "follow": "Segui", "following": "Seguendo", "verified": "Produttore Verificato" },
+  "invitationHall": { "title": "Sala Inviti", "subtitle": "Pubblica le tue esigenze o trova opportunità", "postRFP": "Pubblica Progetto", "budget": "Budget", "timeline": "Tempistica", "respond": "Rispondi", "responses": "Risposte", "shortlist": "Selezione", "open": "Aperto", "closed": "Chiuso" },
+  "profile": { "manufacturer": "Produttore", "designer": "Designer", "verified": "Verificato", "pendingVerification": "Verifica in attesa", "editProfile": "Modifica Profilo", "products": "Prodotti", "portfolio": "Portfolio", "about": "Chi siamo", "contact": "Contatto" },
+  "admin": { "auditQueue": "Coda di Verifica", "pending": "In attesa", "approved": "Approvato", "rejected": "Rifiutato", "review": "Rivedi", "approve": "Approva", "reject": "Rifiuta" },
+  "common": { "search": "Cerca", "loading": "Caricamento...", "error": "Qualcosa è andato storto", "save": "Salva", "cancel": "Annulla", "submit": "Invia", "back": "Indietro", "viewAll": "Vedi Tutto", "learnMore": "Scopri di Più" }
+}

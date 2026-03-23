@@ -1,0 +1,9 @@
+{
+  "nav": { "worldWall": "世界墙", "discover": "发现", "invitationHall": "邀请大厅", "messages": "消息", "profile": "主页", "admin": "管理后台" },
+  "auth": { "signIn": "登录", "signUp": "注册", "email": "邮笱", "password": "密码", "manufacturer": "厂商", "designer": "设计师", "role": "我是", "createAccount": "创建账号", "haveAccount": "已有账号？", "noAccount": "没有账号？", "companyName": "公司名称", "fullName": "姓名" },
+  "worldWall": { "title": "世界墙", "subtitle": "发现认证厂商与设计师的最新动态", "post": "发布", "writePost": "与社区分享你的想法...", "likes": "赞", "comments": "评论", "follow": "关注", "following": "已关注", "verified": "认证厂商" },
+  "invitationHall": { "title": "邀请大厅", "subtitle": "发布项目需求或寻找合作机会", "postRFP": "发布需求", "budget": "预算", "timeline": "工期", "respond": "回应", "responses": "回应", "shortlist": "入围", "open": "招募中", "closed": "已关闭" },
+  "profile": { "manufacturer": "厂商", "designer": "设计师", "verified": "已认证", "pendingVerification": "待审核", "editProfile": "编辑主页", "products": "产品", "portfolio": "作品集", "about": "关于", "contact": "联系" },
+  "admin": { "auditQueue": "审核队列", "pending": "待审核", "approved": "已通过", "rejected": "已拒绝", "review": "查看", "approve": "通过", "reject": "拒绝" },
+  "common": { "search": "搜索", "loading": "加载中...", "error": "出现错误", "save": "保存", "cancel": "取消", "submit": "提交", "back": "返回", "viewAll": "查看全部", "learnMore": "了解更多" }
+}
