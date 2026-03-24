@@ -35,6 +35,7 @@ export function PostCard({ post, locale, onUpdate }: Props) {
   const isManufacturer = post.author_role === "manufacturer";
   const isVerified = isManufacturer && author?.is_verified;
   const profileHref = `/${locale}/${isManufacturer ? "manufacturers" : "designers"}/${post.author_id}`;
+  const postHref = `/${locale}/world-wall/${post.id}`;
   const initial = authorName.charAt(0).toUpperCase();
   const timeAgo = new Date(post.created_at).toLocaleDateString("en-GB", {
     day: "numeric", month: "short", year: "numeric",
@@ -118,18 +119,20 @@ export function PostCard({ post, locale, onUpdate }: Props) {
           </Link>
         </div>
 
-        {/* Content */}
-        <p className="text-ink-200 text-sm leading-relaxed mb-4 font-light">{post.content}</p>
+        {/* Content — click to open full post */}
+        <Link href={postHref} className="block group">
+          <p className="text-ink-200 text-sm leading-relaxed mb-4 font-light group-hover:text-cream transition-colors duration-200">{post.content}</p>
 
-        {/* Media */}
-        {post.media_urls && post.media_urls.length > 0 && (
-          <div className="grid grid-cols-2 gap-px mb-4">
-            {post.media_urls.slice(0, 4).map((url, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={i} src={url} alt="" className="w-full h-44 object-cover" />
-            ))}
-          </div>
-        )}
+          {/* Media */}
+          {post.media_urls && post.media_urls.length > 0 && (
+            <div className="grid grid-cols-2 gap-px mb-4">
+              {post.media_urls.slice(0, 4).map((url, i) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={i} src={url} alt="" className="w-full h-44 object-cover" />
+              ))}
+            </div>
+          )}
+        </Link>
 
         {/* Tags */}
         {post.tags.length > 0 && (

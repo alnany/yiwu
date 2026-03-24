@@ -72,9 +72,9 @@ export default function HomePage() {
           </Link>
           <nav className="hidden md:flex items-center gap-8">
             {[
-              { href: "/en/discover",         label: "Discover" },
-              { href: "/en/world-wall",        label: "World Wall" },
-              { href: "/en/invitation-hall",   label: "Invitation Hall" },
+              { href: "/discover",         label: "Discover" },
+              { href: "/world-wall",        label: "World Wall" },
+              { href: "/invitation-hall",   label: "Invitation Hall" },
             ].map((l) => (
               <Link
                 key={l.href}
