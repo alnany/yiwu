@@ -24,12 +24,16 @@ export function InvitationHallContent({ locale }: Props) {
   return (
     <div>
       <div className="flex justify-end mb-4">
-        <button onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
+        <button
+          onClick={() => setShowForm(true)}
+          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition"
+        >
           <Plus className="w-4 h-4" /> Post a Project
         </button>
       </div>
+
       {showForm && <PostRfpForm locale={locale} onClose={() => { setShowForm(false); fetchRfps(); }} />}
+
       {rfps.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
           <div className="text-5xl mb-4">📋</div>
@@ -37,7 +41,9 @@ export function InvitationHallContent({ locale }: Props) {
         </div>
       ) : (
         <div className="grid md:grid-cols-2 gap-4">
-          {rfps.map((rfp) => <RfpCard key={rfp.id} rfp={rfp} locale={locale} />)}
+          {rfps.map((rfp) => (
+            <RfpCard key={rfp.id} rfp={rfp} locale={locale} />
+          ))}
         </div>
       )}
     </div>
@@ -53,17 +59,34 @@ function RfpCard({ rfp, locale }: { rfp: RfpPost; locale: string }) {
         <span className="ml-2 flex-shrink-0 text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium">Open</span>
       </div>
       <p className="text-sm text-gray-600 line-clamp-2 mb-4">{rfp.description}</p>
+
       <div className="flex flex-wrap gap-2 mb-4">
-        {rfp.product_categories?.map((c) => <span key={c} className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">{c}</span>)}
+        {rfp.product_categories?.map((c) => (
+          <span key={c} className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">{c}</span>
+        ))}
       </div>
+
       <div className="flex items-center gap-4 text-xs text-gray-400">
-        {rfp.budget_range && <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" />{rfp.budget_range}</span>}
-        {rfp.timeline && <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{rfp.timeline}</span>}
-        {rfp.target_region && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{rfp.target_region}</span>}
+        {rfp.budget_range && (
+          <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" />{rfp.budget_range}</span>
+        )}
+        {rfp.timeline && (
+          <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{rfp.timeline}</span>
+        )}
+        {rfp.target_region && (
+          <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{rfp.target_region}</span>
+        )}
       </div>
+
       <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between">
-        <div className="text-xs text-gray-500">by <span className="font-medium">{designer?.full_name || "Designer"}</span></div>
-        <a href={`/${locale}/invitation-hall/${rfp.id}`} className="flex items-center gap-1 text-xs text-blue-600 font-medium hover:underline">
+        <div className="text-xs text-gray-500">
+          by <span className="font-medium">{designer?.full_name || "Designer"}</span>
+          {designer?.company && <span className="text-gray-400"> · {designer.company}</span>}
+        </div>
+        <a
+          href={`/${locale}/invitation-hall/${rfp.id}`}
+          className="flex items-center gap-1 text-xs text-blue-600 font-medium hover:underline"
+        >
           View & Respond <ChevronRight className="w-3 h-3" />
         </a>
       </div>
@@ -72,7 +95,10 @@ function RfpCard({ rfp, locale }: { rfp: RfpPost; locale: string }) {
 }
 
 function PostRfpForm({ locale, onClose }: { locale: string; onClose: () => void }) {
-  const [form, setForm] = useState({ title: "", description: "", product_categories: "", budget_range: "", timeline: "", target_region: "" });
+  const [form, setForm] = useState({
+    title: "", description: "", product_categories: "",
+    budget_range: "", timeline: "", target_region: "",
+  });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -82,10 +108,17 @@ function PostRfpForm({ locale, onClose }: { locale: string; onClose: () => void 
     const res = await fetch("/api/rfp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, product_categories: form.product_categories.split(",").map((c) => c.trim()).filter(Boolean) }),
+      body: JSON.stringify({
+        ...form,
+        product_categories: form.product_categories.split(",").map((c) => c.trim()).filter(Boolean),
+      }),
     });
-    if (res.ok) { onClose(); } else {
-      const d = await res.json(); setError(d.error || "Failed"); setSubmitting(false);
+    if (res.ok) {
+      onClose();
+    } else {
+      const d = await res.json();
+      setError(d.error || "Failed to post project");
+      setSubmitting(false);
     }
   }
 
@@ -100,21 +133,29 @@ function PostRfpForm({ locale, onClose }: { locale: string; onClose: () => void 
         <form onSubmit={handleSubmit} className="space-y-4">
           {[
             { key: "title", label: "Project Title", placeholder: "e.g. Luxury Hotel Lobby Furniture" },
-            { key: "description", label: "Description", placeholder: "Describe your requirements..." },
-            { key: "product_categories", label: "Categories", placeholder: "furniture, marble (comma separated)" },
-            { key: "budget_range", label: "Budget Range", placeholder: "e.g. $50,000 - $100,000" },
+            { key: "description", label: "Description", placeholder: "Describe your project requirements..." },
+            { key: "product_categories", label: "Product Categories", placeholder: "furniture, marble, lighting (comma separated)" },
+            { key: "budget_range", label: "Budget Range", placeholder: "e.g. $50,000 – $100,000" },
             { key: "timeline", label: "Timeline", placeholder: "e.g. 3 months" },
             { key: "target_region", label: "Your Region", placeholder: "e.g. North America" },
           ].map(({ key, label, placeholder }) => (
             <div key={key}>
               <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-              {key === "description" ?
-                <textarea value={(form as any)[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                  required={key === "description"} placeholder={placeholder} rows={3}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400 resize-none" /> :
-                <input value={(form as any)[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                  required={key === "title"} placeholder={placeholder}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400" />}
+              {key === "description" ? (
+                <textarea
+                  value={(form as any)[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                  required
+                  placeholder={placeholder} rows={3}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400 resize-none"
+                />
+              ) : (
+                <input
+                  value={(form as any)[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                  required={key === "title"}
+                  placeholder={placeholder}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
+                />
+              )}
             </div>
           ))}
           <div className="flex gap-3 pt-2">
