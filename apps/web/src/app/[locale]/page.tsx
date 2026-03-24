@@ -67,7 +67,7 @@ export default function HomePage() {
       {/* ── Navbar ── */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-ink-900/90 backdrop-blur-md border-b border-ink-700/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16">
-          <Link href="/en" className="font-display text-xl font-medium text-cream tracking-wide">
+          <Link href="/" className="font-display text-xl font-medium text-cream tracking-wide">
             易物 <span className="text-gold text-sm font-sans font-light tracking-widest-luxury ml-1">YI WU</span>
           </Link>
           <nav className="hidden md:flex items-center gap-8">
@@ -87,13 +87,13 @@ export default function HomePage() {
           </nav>
           <div className="flex items-center gap-4">
             <Link
-              href="/en/login"
+              href="/login"
               className="text-xs tracking-wide-luxury uppercase text-ink-300 hover:text-cream transition-colors duration-300"
             >
               Sign In
             </Link>
             <Link
-              href="/en/register"
+              href="/register"
               className="text-xs tracking-wide-luxury uppercase bg-gold text-ink-900 px-5 py-2.5 hover:bg-gold-light transition-colors duration-300"
             >
               Apply
@@ -138,14 +138,14 @@ export default function HomePage() {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
-              href="/en/register"
+              href="/register"
               className="group inline-flex items-center gap-3 bg-gold text-ink-900 px-10 py-4 text-xs tracking-widest-luxury uppercase font-medium hover:bg-gold-light transition-all duration-300"
             >
               Start Sourcing
               <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
             </Link>
             <Link
-              href="/en/world-wall"
+              href="/world-wall"
               className="inline-flex items-center gap-3 border border-ink-400 text-cream px-10 py-4 text-xs tracking-widest-luxury uppercase font-light hover:border-gold hover:text-gold transition-all duration-300"
             >
               Explore Showcase
@@ -229,7 +229,7 @@ export default function HomePage() {
           {/* CTA */}
           <div className="text-center mt-14">
             <Link
-              href="/en/discover"
+              href="/discover"
               className="inline-flex items-center gap-3 border border-gold/50 text-gold px-10 py-4 text-xs tracking-widest-luxury uppercase hover:bg-gold hover:text-ink-900 transition-all duration-300"
             >
               View Full Collection
@@ -298,7 +298,7 @@ export default function HomePage() {
               from designers and architects in 48+ countries.
             </p>
             <Link
-              href="/en/register?role=manufacturer"
+              href="/register?role=manufacturer"
               className="inline-flex items-center gap-3 bg-gold text-ink-900 px-8 py-3 text-xs tracking-widest-luxury uppercase font-medium hover:bg-gold-light transition-colors duration-300"
             >
               Apply as Manufacturer
@@ -322,7 +322,7 @@ export default function HomePage() {
               and collaborate with factories that match your quality standard.
             </p>
             <Link
-              href="/en/register?role=designer"
+              href="/register?role=designer"
               className="inline-flex items-center gap-3 border border-gold text-gold px-8 py-3 text-xs tracking-widest-luxury uppercase font-light hover:bg-gold hover:text-ink-900 transition-all duration-300"
             >
               Join as Designer
@@ -350,18 +350,18 @@ export default function HomePage() {
               <div>
                 <p className="text-ink-500 uppercase tracking-wide-luxury mb-4">Platform</p>
                 <div className="flex flex-col gap-3">
-                  <Link href="/en/discover"       className="text-ink-300 hover:text-gold transition-colors">Discover</Link>
-                  <Link href="/en/world-wall"      className="text-ink-300 hover:text-gold transition-colors">World Wall</Link>
-                  <Link href="/en/invitation-hall" className="text-ink-300 hover:text-gold transition-colors">Invitation Hall</Link>
+                  <Link href="/discover"       className="text-ink-300 hover:text-gold transition-colors">Discover</Link>
+                  <Link href="/world-wall"      className="text-ink-300 hover:text-gold transition-colors">World Wall</Link>
+                  <Link href="/invitation-hall" className="text-ink-300 hover:text-gold transition-colors">Invitation Hall</Link>
                 </div>
               </div>
               <div>
                 <p className="text-ink-500 uppercase tracking-wide-luxury mb-4">Language</p>
                 <div className="flex flex-col gap-3">
-                  <Link href="/en" className="text-ink-300 hover:text-gold transition-colors">English</Link>
-                  <Link href="/zh" className="text-ink-300 hover:text-gold transition-colors">中文</Link>
-                  <Link href="/es" className="text-ink-300 hover:text-gold transition-colors">Español</Link>
-                  <Link href="/it" className="text-ink-300 hover:text-gold transition-colors">Italiano</Link>
+                  <Link href="/" locale="en" className="text-ink-300 hover:text-gold transition-colors">English</Link>
+                  <Link href="/" locale="zh" className="text-ink-300 hover:text-gold transition-colors">中文</Link>
+                  <Link href="/" locale="es" className="text-ink-300 hover:text-gold transition-colors">Español</Link>
+                  <Link href="/" locale="it" className="text-ink-300 hover:text-gold transition-colors">Italiano</Link>
                 </div>
               </div>
             </div>
