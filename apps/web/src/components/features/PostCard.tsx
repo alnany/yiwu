@@ -12,12 +12,35 @@ interface Comment {
   author_name: string;
   author_role: string;
   is_verified: boolean;
+  avatar_url?: string;
 }
 
 interface Props {
   post: Post;
   locale: string;
   onUpdate: () => void;
+}
+
+function Avatar({ src, name, size = "sm" }: { src?: string; name: string; size?: "sm" | "md" }) {
+  const initial = name.charAt(0).toUpperCase();
+  const dim = size === "md" ? "w-9 h-9" : "w-7 h-7";
+  const textSize = size === "md" ? "text-sm" : "text-xs";
+
+  if (src) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={name}
+        className={`${dim} rounded-full object-cover border border-ink-600 hover:border-gold/50 transition-colors duration-200`}
+      />
+    );
+  }
+  return (
+    <div className={`${dim} bg-ink-700 border border-ink-600 flex items-center justify-center text-gold font-display font-medium ${textSize} flex-shrink-0 hover:border-gold/50 transition-colors duration-200`}>
+      {initial}
+    </div>
+  );
 }
 
 export function PostCard({ post, locale, onUpdate }: Props) {
@@ -31,14 +54,13 @@ export function PostCard({ post, locale, onUpdate }: Props) {
   const [commentCount, setCommentCount] = useState(post.comment_count);
 
   const author = post.author as any;
-  const authorName = author?.company_name || author?.full_name || "Anonymous";
+  const authorName = author?.company_name || author?.full_name || "匿名";
   const isManufacturer = post.author_role === "manufacturer";
   const isVerified = isManufacturer && author?.is_verified;
   const profileHref = `/${locale}/${isManufacturer ? "manufacturers" : "designers"}/${post.author_id}`;
   const postHref = `/${locale}/world-wall/${post.id}`;
-  const initial = authorName.charAt(0).toUpperCase();
-  const timeAgo = new Date(post.created_at).toLocaleDateString("en-GB", {
-    day: "numeric", month: "short", year: "numeric",
+  const timeAgo = new Date(post.created_at).toLocaleDateString("zh-CN", {
+    month: "short", day: "numeric",
   });
 
   async function handleLike() {
@@ -78,7 +100,7 @@ export function PostCard({ post, locale, onUpdate }: Props) {
         content: newComment.content,
         created_at: newComment.created_at,
         author_id: newComment.author_id,
-        author_name: "You",
+        author_name: "你",
         author_role: "user",
         is_verified: false,
       }]);
@@ -94,10 +116,8 @@ export function PostCard({ post, locale, onUpdate }: Props) {
       <div className="p-6">
         {/* Author */}
         <div className="flex items-center gap-3 mb-5">
-          <Link href={profileHref}>
-            <div className="w-9 h-9 bg-ink-700 border border-ink-600 flex items-center justify-center text-gold font-display font-medium text-sm flex-shrink-0 hover:border-gold/50 transition-colors duration-200">
-              {initial}
-            </div>
+          <Link href={profileHref} className="flex-shrink-0">
+            <Avatar src={author?.avatar_url} name={authorName} size="md" />
           </Link>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
@@ -115,7 +135,7 @@ export function PostCard({ post, locale, onUpdate }: Props) {
             href={`/${locale}/messages?contact=${post.author_id}`}
             className="text-xs border border-ink-600 text-ink-400 hover:border-gold/40 hover:text-gold px-3 py-1.5 transition-all duration-200"
           >
-            Message
+            私信
           </Link>
         </div>
 
@@ -125,10 +145,17 @@ export function PostCard({ post, locale, onUpdate }: Props) {
 
           {/* Media */}
           {post.media_urls && post.media_urls.length > 0 && (
-            <div className="grid grid-cols-2 gap-px mb-4">
+            <div className={`gap-px mb-4 ${post.media_urls.length === 1 ? "block" : "grid grid-cols-2"}`}>
               {post.media_urls.slice(0, 4).map((url, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={i} src={url} alt="" className="w-full h-44 object-cover" />
+                <img
+                  key={i}
+                  src={url}
+                  alt=""
+                  className={`w-full object-cover ${
+                    post.media_urls.length === 1 ? "h-72" : "h-44"
+                  }`}
+                />
               ))}
             </div>
           )}
@@ -180,7 +207,6 @@ export function PostCard({ post, locale, onUpdate }: Props) {
       {/* Comments panel */}
       {showComments && (
         <div className="border-t border-ink-700/50 bg-ink-900/40">
-          {/* Existing comments */}
           {comments.length > 0 && (
             <div className="px-6 py-4 space-y-4">
               {comments.map((c) => (
@@ -190,7 +216,7 @@ export function PostCard({ post, locale, onUpdate }: Props) {
           )}
           {commentsLoaded && comments.length === 0 && (
             <p className="px-6 py-4 text-xs text-ink-600 font-light">
-              No comments yet. Be the first.
+              暂无评论，抢先留言吧。
             </p>
           )}
 
@@ -199,7 +225,7 @@ export function PostCard({ post, locale, onUpdate }: Props) {
             <input
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
-              placeholder="Add a comment..."
+              placeholder="发表评论..."
               maxLength={1000}
               className="flex-1 bg-ink-800 border border-ink-600 border-r-0 text-cream text-xs px-4 py-2.5 focus:outline-none focus:border-gold placeholder-ink-600"
             />
@@ -218,18 +244,15 @@ export function PostCard({ post, locale, onUpdate }: Props) {
 }
 
 function CommentRow({ comment, locale }: { comment: Comment; locale: string }) {
-  const initial = comment.author_name.charAt(0).toUpperCase();
   const profileHref = `/${locale}/${comment.author_role === "manufacturer" ? "manufacturers" : "designers"}/${comment.author_id}`;
-  const timeAgo = new Date(comment.created_at).toLocaleDateString("en-GB", {
-    day: "numeric", month: "short",
+  const timeAgo = new Date(comment.created_at).toLocaleDateString("zh-CN", {
+    month: "short", day: "numeric",
   });
 
   return (
     <div className="flex gap-3">
       <Link href={profileHref} className="flex-shrink-0">
-        <div className="w-7 h-7 bg-ink-700 border border-ink-600/50 flex items-center justify-center text-gold/70 font-display font-medium text-xs hover:border-gold/40 transition-colors duration-200">
-          {initial}
-        </div>
+        <Avatar src={comment.avatar_url} name={comment.author_name} size="sm" />
       </Link>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5 mb-1">

@@ -1,7 +1,7 @@
 "use client";
 import { use, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { ArrowLeft, Heart, MessageCircle, BadgeCheck, Send, Share2 } from "lucide-react";
+import { ArrowLeft, Heart, 私信Circle, BadgeCheck, Send, 分享2 } from "lucide-react";
 import { Post } from "@/types";
 
 interface Comment {
@@ -83,7 +83,7 @@ export default function PostDetailPage({
   if (loading) {
     return (
       <div className="max-w-2xl mx-auto pt-16 text-center text-ink-500 text-sm">
-        Loading...
+        加载中...
       </div>
     );
   }
@@ -91,9 +91,9 @@ export default function PostDetailPage({
   if (!post) {
     return (
       <div className="max-w-2xl mx-auto pt-16 text-center">
-        <p className="text-ink-400 text-sm mb-4">Post not found.</p>
+        <p className="text-ink-400 text-sm mb-4">帖子不存在。</p>
         <Link href={`/${locale}/world-wall`} className="text-gold text-xs hover:underline">
-          ← Back to World Wall
+          ← Back to 世界墙
         </Link>
       </div>
     );
@@ -117,7 +117,7 @@ export default function PostDetailPage({
         className="inline-flex items-center gap-2 text-xs text-ink-500 hover:text-gold transition-colors duration-200 mb-8 tracking-wide-luxury uppercase"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
-        World Wall
+        世界墙
       </Link>
 
       {/* Post card */}
@@ -151,7 +151,7 @@ export default function PostDetailPage({
               href={`/${locale}/messages?contact=${post.author_id}`}
               className="text-xs border border-ink-600 text-ink-400 hover:border-gold/40 hover:text-gold px-4 py-2 transition-all duration-200 tracking-wide"
             >
-              Message
+              私信
             </Link>
           </div>
 
@@ -191,15 +191,15 @@ export default function PostDetailPage({
               }`}
             >
               <Heart className={`w-4 h-4 ${liked ? "fill-current" : ""}`} />
-              <span>{likeCount} {likeCount === 1 ? "like" : "likes"}</span>
+              <span>{likeCount} {likeCount === 1 ? "赞" : "赞"}</span>
             </button>
             <span className="flex items-center gap-2 text-sm text-ink-500">
-              <MessageCircle className="w-4 h-4" />
-              <span>{commentCount} {commentCount === 1 ? "comment" : "comments"}</span>
+              <私信Circle className="w-4 h-4" />
+              <span>{commentCount} {commentCount === 1 ? "评论" : "评论"}</span>
             </span>
             <button className="flex items-center gap-2 text-sm text-ink-500 hover:text-gold transition-colors duration-200 ml-auto">
-              <Share2 className="w-4 h-4" />
-              <span className="text-xs">Share</span>
+              <分享2 className="w-4 h-4" />
+              <span className="text-xs">分享</span>
             </button>
           </div>
         </div>
@@ -215,7 +215,7 @@ export default function PostDetailPage({
           </div>
         ) : (
           <div className="px-7 py-8 text-center text-ink-600 text-sm font-light">
-            No comments yet — start the conversation.
+            暂无评论，抢先留言吧。
           </div>
         )}
 
@@ -225,7 +225,7 @@ export default function PostDetailPage({
             <input
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
-              placeholder="Add a comment..."
+              placeholder="发表评论..."
               maxLength={1000}
               className="flex-1 bg-ink-900 border border-ink-600 border-r-0 text-cream text-sm px-5 py-3 focus:outline-none focus:border-gold placeholder-ink-600"
             />

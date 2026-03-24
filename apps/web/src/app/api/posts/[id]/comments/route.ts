@@ -31,9 +31,13 @@ export async function GET(
     author_name:
       c.author?.manufacturer_profiles?.[0]?.company_name ||
       c.author?.designer_profiles?.[0]?.full_name ||
-      "User",
+      "用户",
     author_id: c.author?.id,
     is_verified: c.author?.manufacturer_profiles?.[0]?.is_verified || false,
+    avatar_url:
+      c.author?.manufacturer_profiles?.[0]?.avatar_url ||
+      c.author?.designer_profiles?.[0]?.avatar_url ||
+      null,
   }));
 
   return NextResponse.json({ comments: enriched });

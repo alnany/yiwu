@@ -26,7 +26,7 @@ export default function RegisterPage() {
 
     const { data, error: signUpError } = await supabase.auth.signUp({ email, password });
     if (signUpError || !data.user) {
-      setError(signUpError?.message || "Registration failed");
+      setError(signUpError?.message || "注册失败");
       setLoading(false);
       return;
     }
@@ -56,7 +56,7 @@ export default function RegisterPage() {
           <h1 className="font-display text-3xl font-medium text-cream tracking-wide mb-1">
             易物 <span className="text-gold text-sm font-sans font-light tracking-widest-luxury">YI WU</span>
           </h1>
-          <p className="text-ink-400 text-xs tracking-wide-luxury uppercase mt-2">Create your account</p>
+          <p className="text-ink-400 text-xs tracking-wide-luxury uppercase mt-2">创建账号</p>
           <div className="w-8 h-px bg-gold/50 mx-auto mt-4" />
         </div>
 
@@ -71,7 +71,7 @@ export default function RegisterPage() {
                   : "bg-ink-800 text-ink-400 hover:text-ink-200"
               }`}
             >
-              {r === "manufacturer" ? "Manufacturer" : "Designer / Buyer"}
+              {r === "manufacturer" ? "厂商" : "设计师/采购商"}
             </button>
           ))}
         </div>
@@ -83,24 +83,23 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* Input helper */}
           {[
             {
-              label: role === "manufacturer" ? "Company Name" : "Full Name",
+              label: role === "manufacturer" ? "公司名称" : "姓名",
               value: name, onChange: setName, required: true,
-              placeholder: role === "manufacturer" ? "Guangzhou Furniture Co." : "Jane Smith",
+              placeholder: role === "manufacturer" ? "广州工艺家具有限公司" : "张伟",
             },
             {
-              label: "Country", value: country, onChange: setCountry, required: true,
-              placeholder: role === "manufacturer" ? "China" : "United States",
+              label: "所在国家/地区", value: country, onChange: setCountry, required: true,
+              placeholder: role === "manufacturer" ? "中国" : "法国",
             },
             {
-              label: "Email", value: email, onChange: setEmail, required: true,
-              placeholder: "you@example.com", type: "email",
+              label: "邮箱", value: email, onChange: setEmail, required: true,
+              placeholder: "your@email.com", type: "email",
             },
             {
-              label: "Password", value: password, onChange: setPassword, required: true,
-              placeholder: "At least 8 characters", type: "password", minLength: 8,
+              label: "密码", value: password, onChange: setPassword, required: true,
+              placeholder: "至少8位字符", type: "password", minLength: 8,
             },
           ].map(({ label, value, onChange, required, placeholder, type = "text", minLength }) => (
             <div key={label}>
@@ -118,8 +117,7 @@ export default function RegisterPage() {
 
           {role === "manufacturer" && (
             <div className="border border-gold/20 bg-gold/5 p-3 text-xs text-ink-300 leading-relaxed">
-              After registering, our team will schedule an on-site factory audit.
-              You'll receive a verified badge once approved.
+              注册后，我们的团队将安排现场工厂审核。审核通过后将获得认证徽章。
             </div>
           )}
 
@@ -127,14 +125,14 @@ export default function RegisterPage() {
             type="submit" disabled={loading}
             className="w-full bg-gold text-ink-900 py-3.5 text-xs tracking-widest-luxury uppercase font-medium hover:bg-gold-light disabled:opacity-50 transition-colors duration-300 mt-2"
           >
-            {loading ? "Creating account..." : "Create Account"}
+            {loading ? "创建中..." : "创建账号"}
           </button>
         </form>
 
         <p className="text-center text-xs text-ink-500 mt-8">
-          Already have an account?{" "}
+          已有账号？{" "}
           <Link href={`/${locale}/login`} className="text-gold hover:text-gold-light transition-colors">
-            Sign in
+            立即登录
           </Link>
         </p>
       </div>

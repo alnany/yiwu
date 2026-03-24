@@ -13,14 +13,14 @@ export function Navbar({ locale, userRole }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: `/${locale}/world-wall`,      label: "World Wall" },
-    { href: `/${locale}/discover`,        label: "Discover" },
-    { href: `/${locale}/invitation-hall`, label: "Invitation Hall" },
-    { href: `/${locale}/messages`,        label: "Messages" },
+    { href: `/${locale}/world-wall`,      label: "世界墙" },
+    { href: `/${locale}/discover`,        label: "发现" },
+    { href: `/${locale}/invitation-hall`, label: "邀请大厅" },
+    { href: `/${locale}/messages`,        label: "消息" },
   ];
 
   if (userRole === "admin") {
-    navLinks.push({ href: `/${locale}/admin/audits`, label: "Admin" });
+    navLinks.push({ href: `/${locale}/admin/audits`, label: "管理" });
   }
 
   return (
@@ -62,8 +62,8 @@ export function Navbar({ locale, userRole }: NavbarProps) {
               window.location.href = newPath;
             }}
           >
-            <option value="en" className="bg-ink-900">EN</option>
             <option value="zh" className="bg-ink-900">中文</option>
+            <option value="en" className="bg-ink-900">EN</option>
             <option value="es" className="bg-ink-900">ES</option>
             <option value="it" className="bg-ink-900">IT</option>
           </select>
@@ -72,7 +72,7 @@ export function Navbar({ locale, userRole }: NavbarProps) {
             href={`/${locale}/profile`}
             className="text-xs tracking-wide-luxury uppercase bg-gold text-ink-900 px-5 py-2 font-medium hover:bg-gold-light transition-colors duration-300"
           >
-            Profile
+            主页
           </Link>
         </div>
       </div>

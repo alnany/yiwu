@@ -37,7 +37,7 @@ export function CreatePostBox({ locale }: Props) {
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Share something with the community..."
+        placeholder="与社区分享你的想法..."
         className="w-full resize-none bg-transparent text-sm text-ink-200 placeholder-ink-600 outline-none min-h-[80px] font-light leading-relaxed"
         rows={3}
       />
@@ -45,7 +45,7 @@ export function CreatePostBox({ locale }: Props) {
         <input
           value={tags}
           onChange={(e) => setTags(e.target.value)}
-          placeholder="Tags: furniture, ceramic, luxury (comma separated)"
+          placeholder="标签：家具、陶瓷、奢侈品（逗号分隔）"
           className="w-full text-xs bg-ink-900 border border-ink-700 text-ink-300 placeholder-ink-600 px-3 py-2 focus:outline-none focus:border-gold/50"
         />
       </div>
@@ -59,7 +59,7 @@ export function CreatePostBox({ locale }: Props) {
           className="flex items-center gap-2 bg-gold text-ink-900 text-xs tracking-wide-luxury uppercase px-5 py-2.5 font-medium hover:bg-gold-light disabled:opacity-40 transition-colors duration-300"
         >
           <Send className="w-3.5 h-3.5" />
-          {posting ? "Posting..." : "Post"}
+          {posting ? "发布中..." : "发布"}
         </button>
       </div>
     </div>
