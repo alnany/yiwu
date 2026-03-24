@@ -1,6 +1,6 @@
 "use client";
 import { useState, use } from "react";
-import { 搜索, BadgeCheck } from "lucide-react";
+import { Search, BadgeCheck } from "lucide-react";
 import Link from "next/link";
 
 export default function DiscoverPage({
@@ -13,13 +13,13 @@ export default function DiscoverPage({
   const [type, setType] = useState<"manufacturer" | "rfp" | "post">("manufacturer");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searched, set搜索ed] = useState(false);
+  const [searched, setSearched] = useState(false);
 
-  async function handle搜索(e: React.FormEvent) {
+  async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     if (!query.trim()) return;
     setLoading(true);
-    set搜索ed(true);
+    setSearched(true);
     const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&type=${type}`);
     const data = await res.json();
     setResults(data.results || []);
@@ -30,20 +30,20 @@ export default function DiscoverPage({
     <div className="max-w-3xl mx-auto">
       {/* Header */}
       <div className="mb-10">
-        <p className="text-xs tracking-widest-luxury uppercase text-gold mb-2">搜索</p>
+        <p className="text-xs tracking-widest-luxury uppercase text-gold mb-2">探索</p>
         <h1 className="font-display text-headline font-medium text-cream">发现</h1>
         <p className="text-ink-400 text-sm mt-1 font-light">
-          搜索 manufacturers, projects, and posts
+          搜索认证厂商、项目与帖子
         </p>
       </div>
 
-      {/* 搜索 bar */}
-      <form onSubmit={handle搜索} className="flex gap-0 mb-6">
+      {/* Search bar */}
+      <form onSubmit={handleSearch} className="flex gap-0 mb-6">
         <div className="flex-1 relative">
-          <搜索 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-500" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-500" />
           <input
             value={query} onChange={(e) => setQuery(e.target.value)}
-            placeholder="搜索 manufacturers, projects, posts..."
+            placeholder="搜索厂商、项目、帖子..."
             className="w-full pl-11 pr-4 py-3.5 bg-ink-800 border border-ink-600 border-r-0 text-cream text-sm focus:outline-none focus:border-gold placeholder-ink-600"
           />
         </div>
@@ -74,22 +74,22 @@ export default function DiscoverPage({
       {/* Results */}
       {loading && (
         <div className="text-center py-12 text-ink-400 text-sm tracking-wide">
-          搜索ing...
+          搜索中...
         </div>
       )}
 
       {!loading && searched && results.length === 0 && (
         <div className="text-center py-16 text-ink-500 border border-ink-700/50">
-          <搜索 className="w-10 h-10 mx-auto mb-4 opacity-20" />
-          <p className="text-sm">暂无结果： &quot;{query}&quot;</p>
-          <p className="text-xs mt-1 text-ink-600">请尝试不同关键词</p>
+          <Search className="w-10 h-10 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">暂无结果：&quot;{query}&quot;</p>
+          <p className="text-xs mt-1 text-ink-600">请尝试不同关键词或类别</p>
         </div>
       )}
 
       {!loading && results.length > 0 && (
         <div className="space-y-px">
           {results.map((r: any) => (
-            <搜索Result key={r.id} result={r} type={type} locale={locale} />
+            <SearchResult key={r.id} result={r} type={type} locale={locale} />
           ))}
         </div>
       )}
@@ -97,7 +97,7 @@ export default function DiscoverPage({
       {!searched && (
         <div className="text-center py-20 border border-ink-800 text-ink-600">
           <p className="font-display text-lg text-ink-500">
-            搜索 for verified manufacturers,<br />开放项目及更多
+            搜索认证厂商、<br />开放项目及更多
           </p>
         </div>
       )}
@@ -105,7 +105,7 @@ export default function DiscoverPage({
   );
 }
 
-function 搜索Result({ result, type, locale }: { result: any; type: string; locale: string }) {
+function SearchResult({ result, type, locale }: { result: any; type: string; locale: string }) {
   if (type === "manufacturer") {
     return (
       <Link href={`/${locale}/manufacturers/${result.user?.id || result.user_id}`} className="block">
@@ -131,7 +131,7 @@ function 搜索Result({ result, type, locale }: { result: any; type: string; loc
           </div>
           {result.is_verified && (
             <span className="text-xs border border-gold/40 text-gold px-3 py-1 flex-shrink-0 tracking-wide">
-              Verified
+              认证
             </span>
           )}
         </div>
@@ -158,7 +158,7 @@ function 搜索Result({ result, type, locale }: { result: any; type: string; loc
   return (
     <div className="bg-ink-800 border border-ink-700/50 p-5">
       <p className="text-sm text-ink-200 font-light">{result.content}</p>
-      <p className="text-xs text-ink-600 mt-2">{new Date(result.created_at).toLocaleDateString()}</p>
+      <p className="text-xs text-ink-600 mt-2">{new Date(result.created_at).toLocaleDateString("zh-CN")}</p>
     </div>
   );
 }

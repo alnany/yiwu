@@ -1,7 +1,7 @@
 "use client";
 import { use, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { ArrowLeft, Heart, 私信Circle, BadgeCheck, Send, 分享2 } from "lucide-react";
+import { ArrowLeft, Heart, MessageCircle, BadgeCheck, Send, Share2 } from "lucide-react";
 import { Post } from "@/types";
 
 interface Comment {
@@ -194,11 +194,11 @@ export default function PostDetailPage({
               <span>{likeCount} {likeCount === 1 ? "赞" : "赞"}</span>
             </button>
             <span className="flex items-center gap-2 text-sm text-ink-500">
-              <私信Circle className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4" />
               <span>{commentCount} {commentCount === 1 ? "评论" : "评论"}</span>
             </span>
             <button className="flex items-center gap-2 text-sm text-ink-500 hover:text-gold transition-colors duration-200 ml-auto">
-              <分享2 className="w-4 h-4" />
+              <Share2 className="w-4 h-4" />
               <span className="text-xs">分享</span>
             </button>
           </div>
