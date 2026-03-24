@@ -33,90 +33,114 @@ export default async function ManufacturerPage({
     .limit(1);
 
   const audit = audits?.[0];
+  const initial = profile.company_name.charAt(0).toUpperCase();
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Cover + header */}
-      <div className="relative">
-        <div className="h-48 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl mb-0 overflow-hidden">
-          {profile.cover_url && (
-            <img src={profile.cover_url} alt="" className="w-full h-full object-cover" />
-          )}
-        </div>
-        <div className="bg-white rounded-xl shadow-sm p-6 -mt-8 mx-4 relative z-10">
-          <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-            <div className="w-20 h-20 rounded-xl bg-blue-100 flex items-center justify-center text-3xl font-bold text-blue-600 border-4 border-white shadow -mt-14">
-              {profile.avatar_url
-                ? <img src={profile.avatar_url} alt="" className="w-full h-full object-cover rounded-xl" />
-                : profile.company_name.charAt(0)}
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-2xl font-bold text-gray-900">{profile.company_name}</h1>
-                {profile.is_verified && (
-                  <span className="flex items-center gap-1 bg-blue-50 text-blue-600 text-xs font-semibold px-2 py-1 rounded-full">
-                    <BadgeCheck className="w-3.5 h-3.5" /> Verified
-                  </span>
-                )}
-                {!profile.is_verified && audit?.status === "pending" && (
-                  <span className="bg-yellow-50 text-yellow-700 text-xs font-semibold px-2 py-1 rounded-full">
-                    Pending Verification
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 flex-wrap">
-                {profile.country && (
-                  <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{profile.city ? `${profile.city}, ` : ""}{profile.country}</span>
-                )}
-                {profile.website && (
-                  <a href={profile.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-blue-500 hover:underline">
-                    <Globe className="w-3.5 h-3.5" />{profile.website.replace(/^https?:\/\//, "")}
-                  </a>
-                )}
-              </div>
-            </div>
-            <a
-              href={`/${locale}/messages?contact=${id}`}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition flex-shrink-0"
-            >
-              Send Message
-            </a>
+      {/* Cover */}
+      <div className="h-40 bg-ink-800 border border-ink-700/50 overflow-hidden relative">
+        {profile.cover_url && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={profile.cover_url} alt="" className="w-full h-full object-cover opacity-60" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 to-transparent" />
+      </div>
+
+      {/* Profile card */}
+      <div className="bg-ink-800 border border-t-0 border-ink-700/50 px-8 pb-8">
+        <div className="flex flex-col sm:flex-row sm:items-start gap-5 -mt-8 relative z-10">
+          {/* Avatar */}
+          <div className="w-16 h-16 bg-ink-700 border-2 border-ink-800 flex items-center justify-center font-display text-xl font-medium text-gold flex-shrink-0">
+            {profile.avatar_url
+              ? <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" /> // eslint-disable-line
+              : initial}
           </div>
 
-          {profile.description && (
-            <p className="mt-4 text-gray-600 text-sm leading-relaxed">{profile.description}</p>
-          )}
-
-          {(profile.tags?.length ?? 0) > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {profile.tags.map((tag: string) => (
-                <span key={tag} className="flex items-center gap-1 bg-gray-100 text-gray-600 text-xs px-2.5 py-1 rounded-full">
-                  <Tag className="w-3 h-3" />{tag}
+          <div className="flex-1 pt-2 sm:pt-3">
+            <div className="flex items-center gap-2.5 flex-wrap mb-1">
+              <h1 className="font-display text-xl font-medium text-cream">{profile.company_name}</h1>
+              {profile.is_verified && (
+                <span className="flex items-center gap-1 border border-gold/40 text-gold text-xs px-2 py-0.5">
+                  <BadgeCheck className="w-3 h-3" /> Verified
                 </span>
-              ))}
+              )}
+              {!profile.is_verified && audit?.status === "pending" && (
+                <span className="border border-gold/20 text-gold/60 text-xs px-2 py-0.5">
+                  Pending Verification
+                </span>
+              )}
             </div>
-          )}
+            <div className="flex items-center gap-4 text-xs text-ink-500 flex-wrap">
+              {profile.country && (
+                <span className="flex items-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  {profile.city ? `${profile.city}, ` : ""}{profile.country}
+                </span>
+              )}
+              {profile.website && (
+                <a
+                  href={profile.website} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-gold/60 hover:text-gold transition-colors"
+                >
+                  <Globe className="w-3 h-3" />{profile.website.replace(/^https?:\/\//, "")}
+                </a>
+              )}
+            </div>
+          </div>
+
+          <a
+            href={`/${locale}/messages?contact=${id}`}
+            className="bg-gold text-ink-900 px-5 py-2.5 text-xs tracking-widest-luxury uppercase font-medium hover:bg-gold-light transition-colors duration-300 flex-shrink-0 mt-3 sm:mt-4"
+          >
+            Send Message
+          </a>
         </div>
+
+        {profile.description && (
+          <p className="mt-6 text-ink-300 text-sm leading-relaxed font-light max-w-2xl">
+            {profile.description}
+          </p>
+        )}
+
+        {(profile.tags?.length ?? 0) > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-5">
+            {profile.tags.map((tag: string) => (
+              <span key={tag} className="flex items-center gap-1 border border-ink-600 text-ink-400 text-xs px-2.5 py-1">
+                <Tag className="w-2.5 h-2.5" />{tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Posts */}
-      <div className="mt-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Recent Posts</h2>
-        {posts && posts.length > 0 ? (
-          <div className="grid sm:grid-cols-2 gap-4">
-            {posts.map((post: any) => (
-              <div key={post.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
-                <p className="text-sm text-gray-700 line-clamp-2">{post.content}</p>
-                {post.media_urls?.[0] && (
-                  <img src={post.media_urls[0]} alt="" className="mt-3 rounded-lg w-full h-40 object-cover" />
-                )}
-                <p className="text-xs text-gray-400 mt-2">{new Date(post.created_at).toLocaleDateString()}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-gray-400">No posts yet.</p>
-        )}
+      <div className="mt-px">
+        <div className="bg-ink-800 border border-ink-700/50 px-8 py-6">
+          <h2 className="font-display text-base font-medium text-cream mb-6">Recent Posts</h2>
+          {posts && posts.length > 0 ? (
+            <div className="grid sm:grid-cols-2 gap-px bg-ink-700/30">
+              {posts.map((post: any) => (
+                <div key={post.id} className="bg-ink-800 p-5">
+                  <p className="text-sm text-ink-300 line-clamp-3 font-light leading-relaxed">
+                    {post.content}
+                  </p>
+                  {post.media_urls?.[0] && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={post.media_urls[0]} alt=""
+                      className="mt-3 w-full h-40 object-cover"
+                    />
+                  )}
+                  <p className="text-xs text-ink-600 mt-3">
+                    {new Date(post.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-ink-600 font-light">No posts yet.</p>
+          )}
+        </div>
       </div>
     </div>
   );

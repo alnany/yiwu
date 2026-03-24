@@ -14,39 +14,68 @@ export default function LoginPage() {
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true); setError("");
+    setLoading(true);
+    setError("");
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) { setError(error.message); setLoading(false); }
-    else { router.push(`/${locale}/world-wall`); }
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+    } else {
+      router.push(`/${locale}/world-wall`);
+    }
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-600 mb-1">易物 YiWu</h1>
-        <p className="text-gray-500 text-sm">Welcome back</p>
+    <div className="w-full max-w-md">
+      {/* Card */}
+      <div className="bg-ink-800 border border-ink-700/50 p-10">
+        {/* Brand */}
+        <div className="text-center mb-10">
+          <h1 className="font-display text-3xl font-medium text-cream tracking-wide mb-1">
+            易物 <span className="text-gold text-sm font-sans font-light tracking-widest-luxury">YI WU</span>
+          </h1>
+          <p className="text-ink-400 text-xs tracking-wide-luxury uppercase mt-2">Welcome back</p>
+          <div className="w-8 h-px bg-gold/50 mx-auto mt-4" />
+        </div>
+
+        <form onSubmit={handleLogin} className="space-y-5">
+          {error && (
+            <div className="border border-red-900/50 bg-red-950/30 text-red-400 text-xs p-3">
+              {error}
+            </div>
+          )}
+          <div>
+            <label className="block text-xs tracking-wide-luxury uppercase text-ink-400 mb-2">Email</label>
+            <input
+              type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
+              className="w-full bg-ink-900 border border-ink-600 text-cream text-sm px-4 py-3 focus:outline-none focus:border-gold placeholder-ink-600 rounded-none"
+              placeholder="you@example.com"
+            />
+          </div>
+          <div>
+            <label className="block text-xs tracking-wide-luxury uppercase text-ink-400 mb-2">Password</label>
+            <input
+              type="password" value={password} onChange={(e) => setPassword(e.target.value)} required
+              className="w-full bg-ink-900 border border-ink-600 text-cream text-sm px-4 py-3 focus:outline-none focus:border-gold placeholder-ink-600 rounded-none"
+              placeholder="••••••••"
+            />
+          </div>
+          <button
+            type="submit" disabled={loading}
+            className="w-full bg-gold text-ink-900 py-3.5 text-xs tracking-widest-luxury uppercase font-medium hover:bg-gold-light disabled:opacity-50 transition-colors duration-300 mt-2"
+          >
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
+        </form>
+
+        <p className="text-center text-xs text-ink-500 mt-8">
+          No account?{" "}
+          <Link href={`/${locale}/register`} className="text-gold hover:text-gold-light transition-colors">
+            Apply to join
+          </Link>
+        </p>
       </div>
-      <form onSubmit={handleLogin} className="space-y-4">
-        {error && <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg">{error}</div>}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
-            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400" placeholder="you@example.com" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required
-            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400" placeholder="••••••••" />
-        </div>
-        <button type="submit" disabled={loading}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 transition">
-          {loading ? "Signing in..." : "Sign In"}
-        </button>
-      </form>
-      <p className="text-center text-sm text-gray-500 mt-6">
-        Don&apos;t have an account? <Link href={`/${locale}/register`} className="text-blue-600 font-medium hover:underline">Sign up</Link>
-      </p>
     </div>
   );
 }

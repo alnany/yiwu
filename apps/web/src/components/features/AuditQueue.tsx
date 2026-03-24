@@ -33,12 +33,14 @@ export function AuditQueue({ locale }: Props) {
   return (
     <div>
       {/* Filter tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-px mb-8 bg-ink-700/30">
         {(["pending", "completed", "all"] as const).map((f) => (
           <button
             key={f} onClick={() => setFilter(f)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-              filter === f ? "bg-blue-600 text-white" : "bg-white text-gray-600 border border-gray-200 hover:border-blue-300"
+            className={`flex-1 py-2.5 text-xs tracking-wide-luxury uppercase transition-colors duration-200 ${
+              filter === f
+                ? "bg-gold text-ink-900 font-medium"
+                : "bg-ink-800 text-ink-400 hover:text-ink-200"
             }`}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -47,16 +49,22 @@ export function AuditQueue({ locale }: Props) {
       </div>
 
       {loading ? (
-        <div className="text-center py-12 text-gray-500">Loading audits...</div>
+        <div className="text-center py-16 text-ink-500 text-xs tracking-wide-luxury uppercase">
+          Loading audits...
+        </div>
       ) : audits.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
-          <CheckCircle className="w-12 h-12 mx-auto mb-3 text-green-400" />
-          <p>No {filter} audits</p>
+        <div className="text-center py-20 border border-ink-800">
+          <CheckCircle className="w-8 h-8 mx-auto mb-3 text-ink-600" />
+          <p className="text-ink-500 text-sm">No {filter} audits</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-px">
           {audits.map((audit) => (
-            <AuditRow key={audit.id} audit={audit} locale={locale} onUpdate={updateAudit} expanded={expandedId === audit.id} onToggle={() => setExpandedId(expandedId === audit.id ? null : audit.id)} />
+            <AuditRow
+              key={audit.id} audit={audit} locale={locale} onUpdate={updateAudit}
+              expanded={expandedId === audit.id}
+              onToggle={() => setExpandedId(expandedId === audit.id ? null : audit.id)}
+            />
           ))}
         </div>
       )}
@@ -64,67 +72,94 @@ export function AuditQueue({ locale }: Props) {
   );
 }
 
-function AuditRow({ audit, locale, onUpdate, expanded, onToggle }: {
-  audit: Audit; locale: string; onUpdate: (id: string, r: "pass"|"fail", n: string) => void; expanded: boolean; onToggle: () => void;
+function AuditRow({
+  audit, locale, onUpdate, expanded, onToggle,
+}: {
+  audit: Audit; locale: string;
+  onUpdate: (id: string, r: "pass" | "fail", n: string) => void;
+  expanded: boolean; onToggle: () => void;
 }) {
   const [notes, setNotes] = useState(audit.notes || "");
   const manufacturer = audit.manufacturer as any;
+  const initial = (manufacturer?.company_name || "M").charAt(0).toUpperCase();
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="p-4 flex items-center gap-4 cursor-pointer" onClick={onToggle}>
-        <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm flex-shrink-0">
-          {manufacturer?.company_name?.charAt(0) || "M"}
+    <div className="bg-ink-800 border border-ink-700/50 overflow-hidden">
+      {/* Row header */}
+      <div
+        className="p-5 flex items-center gap-4 cursor-pointer hover:bg-ink-700/30 transition-colors duration-200"
+        onClick={onToggle}
+      >
+        <div className="w-10 h-10 bg-ink-700 flex items-center justify-center text-gold font-display font-medium text-sm flex-shrink-0">
+          {initial}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-gray-900">{manufacturer?.company_name || audit.manufacturer_id}</p>
-          <p className="text-xs text-gray-400">{manufacturer?.country} · Applied {new Date(audit.id).toLocaleDateString()}</p>
+          <p className="font-medium text-cream text-sm">
+            {manufacturer?.company_name || audit.manufacturer_id}
+          </p>
+          <p className="text-xs text-ink-500 mt-0.5">
+            {manufacturer?.country}
+          </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <AuditStatusBadge status={audit.status} result={audit.result} />
-          <ChevronDown className={`w-4 h-4 text-gray-400 transition ${expanded ? "rotate-180" : ""}`} />
+          <ChevronDown
+            className={`w-4 h-4 text-ink-500 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+          />
         </div>
       </div>
 
+      {/* Expanded */}
       {expanded && (
-        <div className="px-4 pb-4 border-t border-gray-50 pt-4">
+        <div className="px-5 pb-5 border-t border-ink-700/50 pt-5">
           {manufacturer?.description && (
-            <p className="text-sm text-gray-600 mb-4">{manufacturer.description}</p>
+            <p className="text-sm text-ink-300 mb-4 font-light leading-relaxed">
+              {manufacturer.description}
+            </p>
           )}
           {(manufacturer?.tags?.length ?? 0) > 0 && (
-            <div className="flex flex-wrap gap-1 mb-4">
+            <div className="flex flex-wrap gap-1.5 mb-4">
               {manufacturer.tags.map((t: string) => (
-                <span key={t} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{t}</span>
+                <span key={t} className="text-xs border border-ink-600 text-ink-400 px-2 py-0.5">
+                  {t}
+                </span>
               ))}
             </div>
           )}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+
+          <div className="mb-5">
+            <label className="block text-xs tracking-wide-luxury uppercase text-ink-500 mb-2">
+              Audit Notes
+            </label>
             <textarea
               value={notes} onChange={(e) => setNotes(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400 resize-none"
+              className="w-full bg-ink-900 border border-ink-600 text-cream text-sm px-4 py-3 focus:outline-none focus:border-gold resize-none placeholder-ink-600"
               rows={2} placeholder="Add audit notes..."
             />
           </div>
+
           {audit.status !== "completed" && (
-            <div className="flex gap-3">
+            <div className="flex gap-px">
               <button
                 onClick={() => onUpdate(audit.id, "fail", notes)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-red-200 text-red-600 text-sm font-medium hover:bg-red-50 transition"
+                className="flex items-center gap-2 px-5 py-2.5 border border-red-900 text-red-500 text-xs font-medium hover:bg-red-950/30 transition-colors duration-200"
               >
-                <XCircle className="w-4 h-4" /> Reject
+                <XCircle className="w-3.5 h-3.5" />
+                Reject
               </button>
               <button
                 onClick={() => onUpdate(audit.id, "pass", notes)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-700 transition"
+                className="flex items-center gap-2 px-5 py-2.5 bg-gold text-ink-900 text-xs font-medium hover:bg-gold-light transition-colors duration-200"
               >
-                <CheckCircle className="w-4 h-4" /> Approve & Verify
+                <CheckCircle className="w-3.5 h-3.5" />
+                Approve & Verify
               </button>
               <a
                 href={`/${locale}/manufacturers/${audit.manufacturer_id}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-gray-600 text-sm hover:bg-gray-50 transition ml-auto"
+                className="flex items-center gap-2 px-5 py-2.5 border border-ink-600 text-ink-400 text-xs hover:text-cream hover:border-ink-400 transition-colors duration-200 ml-auto"
               >
-                <Eye className="w-4 h-4" /> View Profile
+                <Eye className="w-3.5 h-3.5" />
+                View Profile
               </a>
             </div>
           )}
@@ -135,7 +170,23 @@ function AuditRow({ audit, locale, onUpdate, expanded, onToggle }: {
 }
 
 function AuditStatusBadge({ status, result }: { status: string; result?: string }) {
-  if (status === "completed" && result === "pass") return <span className="flex items-center gap-1 text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium"><CheckCircle className="w-3 h-3" />Approved</span>;
-  if (status === "completed" && result === "fail") return <span className="flex items-center gap-1 text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium"><XCircle className="w-3 h-3" />Rejected</span>;
-  return <span className="flex items-center gap-1 text-xs bg-yellow-50 text-yellow-600 px-2 py-0.5 rounded-full font-medium"><Clock className="w-3 h-3" />Pending</span>;
+  if (status === "completed" && result === "pass") {
+    return (
+      <span className="flex items-center gap-1 text-xs border border-green-900 text-green-500 px-2 py-0.5">
+        <CheckCircle className="w-3 h-3" />Approved
+      </span>
+    );
+  }
+  if (status === "completed" && result === "fail") {
+    return (
+      <span className="flex items-center gap-1 text-xs border border-red-900 text-red-500 px-2 py-0.5">
+        <XCircle className="w-3 h-3" />Rejected
+      </span>
+    );
+  }
+  return (
+    <span className="flex items-center gap-1 text-xs border border-gold/40 text-gold/80 px-2 py-0.5">
+      <Clock className="w-3 h-3" />Pending
+    </span>
+  );
 }

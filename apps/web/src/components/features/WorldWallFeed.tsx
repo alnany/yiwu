@@ -10,7 +10,9 @@ export function WorldWallFeed({ locale }: Props) {
   const [loading, setLoading] = useState(true);
   const [cursor, setCursor] = useState<string | null>(null);
 
-  useEffect(() => { fetchPosts(); }, []);
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   async function fetchPosts() {
     try {
@@ -18,7 +20,11 @@ export function WorldWallFeed({ locale }: Props) {
       const data = await res.json();
       setPosts(data.posts || []);
       setCursor(data.next_cursor || null);
-    } catch (e) { console.error(e); } finally { setLoading(false); }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function loadMore() {
@@ -29,19 +35,35 @@ export function WorldWallFeed({ locale }: Props) {
     setCursor(data.next_cursor || null);
   }
 
-  if (loading) return <div className="text-center py-12 text-gray-500">Loading posts...</div>;
-  if (posts.length === 0) return (
-    <div className="text-center py-12 text-gray-400">
-      <div className="text-5xl mb-4">🌍</div>
-      <p className="text-lg">No posts yet. Be the first to share!</p>
-    </div>
-  );
+  if (loading) {
+    return (
+      <div className="text-center py-16 text-ink-500 text-xs tracking-wide-luxury uppercase">
+        Loading posts...
+      </div>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <div className="text-center py-20 border border-ink-800">
+        <p className="font-display text-lg text-ink-500">No posts yet.</p>
+        <p className="text-xs text-ink-600 mt-1">Be the first to share with the community.</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-4">
-      {posts.map((post) => <PostCard key={post.id} post={post} locale={locale} onUpdate={fetchPosts} />)}
+    <div className="space-y-px">
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} locale={locale} onUpdate={fetchPosts} />
+      ))}
       {cursor && (
-        <button onClick={loadMore} className="w-full py-3 text-sm text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition">Load more</button>
+        <button
+          onClick={loadMore}
+          className="w-full py-4 text-xs tracking-wide-luxury uppercase text-gold border border-gold/30 hover:bg-gold/10 transition-colors duration-300"
+        >
+          Load more
+        </button>
       )}
     </div>
   );
