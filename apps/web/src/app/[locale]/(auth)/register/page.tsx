@@ -87,11 +87,11 @@ export default function RegisterPage() {
             {
               label: role === "manufacturer" ? "公司名称" : "姓名",
               value: name, onChange: setName, required: true,
-              placeholder: role === "manufacturer" ? "广州工艺家具有限公司" : "张伟",
+              placeholder: role === "manufacturer" ? "Acme Craft Co." : "Alex Chen",
             },
             {
               label: "所在国家/地区", value: country, onChange: setCountry, required: true,
-              placeholder: role === "manufacturer" ? "中国" : "法国",
+              placeholder: role === "manufacturer" ? "例如：德国" : "例如：法国",
             },
             {
               label: "邮箱", value: email, onChange: setEmail, required: true,
