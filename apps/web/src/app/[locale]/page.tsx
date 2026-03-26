@@ -346,7 +346,7 @@ export default function HomePage() {
             {/* Links */}
             <div className="flex flex-wrap gap-12 text-xs">
               <div>
-                <p class="text-ink-500 uppercase tracking-wide-luxury mb-4">平台</p>
+                <p className="text-ink-500 uppercase tracking-wide-luxury mb-4">平台</p>
                 <div className="flex flex-col gap-3">
                   <Link href="/discover"       className="text-ink-300 hover:text-gold transition-colors">发现</Link>
                   <Link href="/world-wall"      className="text-ink-300 hover:text-gold transition-colors">世界墙</Link>
