@@ -22,16 +22,18 @@ interface Props {
 }
 
 function Avatar({ src, name, size = "sm" }: { src?: string; name: string; size?: "sm" | "md" }) {
+  const [imgError, setImgError] = useState(false);
   const initial = name.charAt(0).toUpperCase();
   const dim = size === "md" ? "w-9 h-9" : "w-7 h-7";
   const textSize = size === "md" ? "text-sm" : "text-xs";
 
-  if (src) {
+  if (src && !imgError) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={src}
         alt={name}
+        onError={() => setImgError(true)}
         className={`${dim} rounded-full object-cover border border-ink-600 hover:border-gold/50 transition-colors duration-200`}
       />
     );
@@ -152,6 +154,7 @@ export function PostCard({ post, locale, onUpdate }: Props) {
                   key={i}
                   src={url}
                   alt=""
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
                   className={`w-full object-cover ${
                     post.media_urls.length === 1 ? "h-72" : "h-44"
                   }`}
