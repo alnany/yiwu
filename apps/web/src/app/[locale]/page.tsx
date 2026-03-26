@@ -7,7 +7,7 @@ const showcaseItems = [
     image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=85&auto=format",
     category: "家具",
     title: "雕塑感休闲椅",
-    maker: "广州艺形工作室",
+    maker: "Studio Forma Milano",
     type: "manufacturer" as const,
   },
   {
@@ -23,7 +23,7 @@ const showcaseItems = [
     image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&q=85&auto=format",
     category: "灯具",
     title: "编织藤制吊灯",
-    maker: "佛山光工艺有限公司",
+    maker: "Atelier Lumière",
     type: "manufacturer" as const,
   },
   {
@@ -39,7 +39,7 @@ const showcaseItems = [
     image: "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=85&auto=format",
     category: "餐具",
     title: "黑曜石餐具套装",
-    maker: "唐山瓷器工坊",
+    maker: "Maison Kato",
     type: "manufacturer" as const,
   },
   {
@@ -117,7 +117,7 @@ export default function HomePage() {
         <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
           {/* Eyebrow */}
           <p className="text-xs tracking-widest-luxury uppercase text-gold mb-8 font-light">
-            专注认证中国制造商的 B2B 平台
+            全球认证厂商 B2B 平台
           </p>
 
           {/* Main headline */}
@@ -128,7 +128,7 @@ export default function HomePage() {
 
           {/* Sub */}
           <p className="text-base lg:text-lg text-ink-200 font-light max-w-2xl mx-auto mb-12 leading-relaxed">
-            易物连接全球顶级设计师与中国认证厂商——<br className="hidden md:block" />
+            易物连接全球顶级设计师与认证厂商——<br className="hidden md:block" />
             无中间商，无代理，直达本源。
           </p>
 
@@ -179,7 +179,7 @@ export default function HomePage() {
               <em className="text-ink-300 not-italic">共创未来</em>
             </h2>
             <p className="text-ink-300 font-light max-w-lg mx-auto text-sm leading-relaxed">
-              从雕塑家具到精密陶瓷——探索当有远见的设计师遇上中国认证工厂后，所诞生的非凡作品。
+              从雕塑家具到精密陶瓷——探索当有远见的设计师遇上认证工厂后，所诞生的非凡作品。
             </p>
           </div>
 
@@ -339,14 +339,14 @@ export default function HomePage() {
                 易物 <span className="text-gold text-sm font-sans font-light tracking-widest-luxury">YI WU</span>
               </p>
               <p className="text-ink-400 text-xs leading-relaxed font-light">
-                连接全球顶级设计师与中国认证厂商。
+                连接全球顶级设计师与全球认证厂商。
               </p>
             </div>
 
             {/* Links */}
             <div className="flex flex-wrap gap-12 text-xs">
               <div>
-                <p className="text-ink-500 uppercase tracking-wide-luxury mb-4">平台</p>
+                <p class="text-ink-500 uppercase tracking-wide-luxury mb-4">平台</p>
                 <div className="flex flex-col gap-3">
                   <Link href="/discover"       className="text-ink-300 hover:text-gold transition-colors">发现</Link>
                   <Link href="/world-wall"      className="text-ink-300 hover:text-gold transition-colors">世界墙</Link>
