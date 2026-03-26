@@ -21,6 +21,21 @@ interface Props {
   onUpdate: () => void;
 }
 
+// Mapping of removed Unsplash photos to working replacements
+const PHOTO_FALLBACKS: Record<string, string> = {
+  "photo-1573408301185-9519f94815b6": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=900&q=85&auto=format",
+  "photo-1584178639036-613ba18a8c13": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85&auto=format",
+  "photo-1556909114-44e3e9399a2f": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=85&auto=format",
+  "photo-1513506003901-1e6a35eb30e2": "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=900&q=85&auto=format",
+};
+
+function resolveMediaUrl(url: string): string {
+  for (const [broken, replacement] of Object.entries(PHOTO_FALLBACKS)) {
+    if (url.includes(broken)) return replacement;
+  }
+  return url;
+}
+
 function Avatar({ src, name, size = "sm" }: { src?: string; name: string; size?: "sm" | "md" }) {
   const [imgError, setImgError] = useState(false);
   const initial = name.charAt(0).toUpperCase();
@@ -152,7 +167,7 @@ export function PostCard({ post, locale, onUpdate }: Props) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={i}
-                  src={url}
+                  src={resolveMediaUrl(url)}
                   alt=""
                   onError={(e) => { e.currentTarget.style.display = "none"; }}
                   className={`w-full object-cover ${
