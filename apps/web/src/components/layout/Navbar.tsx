@@ -16,7 +16,6 @@ export function Navbar({ locale, userRole }: NavbarProps) {
     { href: `/${locale}/world-wall`,      label: "世界墙" },
     { href: `/${locale}/discover`,        label: "发现" },
     { href: `/${locale}/invitation-hall`, label: "邀请大厅" },
-    { href: `/${locale}/messages`,        label: "消息" },
   ];
 
   if (userRole === "admin") {
@@ -27,7 +26,7 @@ export function Navbar({ locale, userRole }: NavbarProps) {
     <nav className="bg-ink-900/95 backdrop-blur-md border-b border-ink-700/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16">
         {/* Brand */}
-        <Link href={`/${locale}`} className="font-display text-lg font-medium text-cream tracking-wide">
+        <Link href={`/${locale}/world-wall`} className="font-display text-lg font-medium text-cream tracking-wide">
           易物{" "}
           <span className="text-gold text-xs font-sans font-light tracking-widest-luxury ml-1">
             YI WU

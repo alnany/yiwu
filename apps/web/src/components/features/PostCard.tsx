@@ -148,12 +148,6 @@ export function PostCard({ post, locale, onUpdate }: Props) {
             </div>
             <p className="text-xs text-ink-500">{timeAgo}</p>
           </div>
-          <Link
-            href={`/${locale}/messages?contact=${post.author_id}`}
-            className="text-xs border border-ink-600 text-ink-400 hover:border-gold/40 hover:text-gold px-3 py-1.5 transition-all duration-200"
-          >
-            私信
-          </Link>
         </div>
 
         {/* Content — click to open full post */}
