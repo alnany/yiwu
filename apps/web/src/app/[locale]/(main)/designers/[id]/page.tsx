@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-import { MapPin, Globe } from "lucide-react";
+import { MapPin, Globe, Heart, MessageCircle } from "lucide-react";
+import Link from "next/link";
 
 export default async function DesignerPage({
   params,
@@ -18,12 +19,12 @@ export default async function DesignerPage({
 
   if (!profile) notFound();
 
-  const { data: rfps } = await supabase
-    .from("rfp_posts")
+  const { data: posts } = await supabase
+    .from("posts")
     .select("*")
-    .eq("designer_id", profile.id)
+    .eq("author_id", id)
     .order("created_at", { ascending: false })
-    .limit(5);
+    .limit(12);
 
   const initial = profile.full_name.charAt(0).toUpperCase();
 
@@ -32,15 +33,16 @@ export default async function DesignerPage({
       {/* Profile card */}
       <div className="bg-ink-800 border border-ink-700/50 p-8">
         <div className="flex items-start gap-6">
-          <div className="w-16 h-16 bg-ink-700 flex items-center justify-center font-display text-xl font-medium text-gold flex-shrink-0">
+          <div className="w-16 h-16 bg-ink-700 border border-ink-600 flex items-center justify-center font-display text-xl font-medium text-gold flex-shrink-0 overflow-hidden">
             {profile.avatar_url
-              ? <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" /> // eslint-disable-line
+              // eslint-disable-next-line @next/next/no-img-element
+              ? <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
               : initial}
           </div>
           <div className="flex-1">
             <h1 className="font-display text-xl font-medium text-cream mb-1">{profile.full_name}</h1>
             {profile.company && (
-              <p className="text-xs text-ink-400 mb-2">{profile.company}</p>
+              <p className="text-xs text-ink-400 mb-2 uppercase tracking-wide">{profile.company}</p>
             )}
             <div className="flex items-center gap-4 text-xs text-ink-500 flex-wrap">
               {profile.country && (
@@ -58,12 +60,9 @@ export default async function DesignerPage({
               )}
             </div>
           </div>
-          <a
-            href={`/${locale}/messages?contact=${id}`}
-            className="bg-gold text-ink-900 px-5 py-2.5 text-xs tracking-widest-luxury uppercase font-medium hover:bg-gold-light transition-colors duration-300 flex-shrink-0"
-          >
-            Send Message
-          </a>
+          <span className="text-xs border border-ink-600 text-ink-400 px-3 py-1 flex-shrink-0">
+            Interior Designer
+          </span>
         </div>
 
         {(profile.specialties?.length ?? 0) > 0 && (
@@ -77,39 +76,62 @@ export default async function DesignerPage({
         )}
       </div>
 
-      {/* Open Projects */}
-      {rfps && rfps.length > 0 && (
-        <div className="mt-px">
-          <div className="bg-ink-800 border border-ink-700/50 px-8 py-6">
-            <h2 className="font-display text-base font-medium text-cream mb-6">Open Projects</h2>
-            <div className="space-y-px">
-              {rfps.map((rfp: any) => (
-                <a
-                  key={rfp.id}
-                  href={`/${locale}/invitation-hall`}
-                  className="block bg-ink-900 border border-ink-700/50 hover:border-gold/30 transition-colors duration-300 p-5"
+      {/* Posts grid */}
+      <div className="mt-px">
+        <div className="bg-ink-800 border border-ink-700/50 px-8 py-6">
+          <h2 className="font-display text-base font-medium text-cream mb-6">
+            Work
+            {posts && posts.length > 0 && (
+              <span className="text-ink-500 font-normal text-sm ml-2">({posts.length})</span>
+            )}
+          </h2>
+
+          {posts && posts.length > 0 ? (
+            <div className="grid sm:grid-cols-2 gap-px bg-ink-700/20">
+              {posts.map((post: any) => (
+                <Link
+                  key={post.id}
+                  href={`/${locale}/world-wall/${post.id}`}
+                  className="block bg-ink-800 group"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="font-medium text-cream text-sm">{rfp.title}</h3>
-                      <p className="text-xs text-ink-400 mt-1 line-clamp-2 font-light">
-                        {rfp.description}
-                      </p>
+                  {post.media_urls?.[0] && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={post.media_urls[0]}
+                      alt=""
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                      className="w-full h-52 object-cover"
+                    />
+                  )}
+                  <div className="p-4">
+                    <p className="text-sm text-ink-300 line-clamp-2 font-light leading-relaxed group-hover:text-cream transition-colors duration-200">
+                      {post.content}
+                    </p>
+                    {post.tags?.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {post.tags.slice(0, 3).map((t: string) => (
+                          <span key={t} className="text-xs text-ink-600">#{t}</span>
+                        ))}
+                      </div>
+                    )}
+                    <div className="flex items-center gap-4 mt-3 text-xs text-ink-600">
+                      <span className="flex items-center gap-1">
+                        <Heart className="w-3 h-3" />{post.like_count}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <MessageCircle className="w-3 h-3" />{post.comment_count}
+                      </span>
+                      <span className="ml-auto">{new Date(post.created_at).toLocaleDateString("en-GB", { month: "short", day: "numeric" })}</span>
                     </div>
-                    <span className={`text-xs px-2 py-0.5 flex-shrink-0 border ${
-                      rfp.status === "open"
-                        ? "border-green-900 text-green-500"
-                        : "border-ink-600 text-ink-500"
-                    }`}>
-                      {rfp.status}
-                    </span>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
-          </div>
+          ) : (
+            <p className="text-sm text-ink-600 font-light py-8 text-center">No posts yet.</p>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
