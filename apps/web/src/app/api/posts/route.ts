@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   const hasMore = data.length > limit;
   const posts = hasMore ? data.slice(0, limit) : data;
   const nextCursor = hasMore ? posts[posts.length - 1].created_at : null;
-  const enriched = posts.map((p: any) => ({ ...p, author_role: p.author?.role, author: p.author?.manufacturer_profiles?.[0] || p.author?.designer_profiles?.[0] }));
+  const enriched = posts.map((p: any) => ({ ...p, author_role: p.author?.role, author: p.author?.manufacturer_profiles || p.author?.designer_profiles }));
   return NextResponse.json({ posts: enriched, next_cursor: nextCursor });
 }
 

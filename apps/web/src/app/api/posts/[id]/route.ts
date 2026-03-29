@@ -26,7 +26,7 @@ export async function GET(
   const enriched = {
     ...data,
     author_role: data.author?.role,
-    author: data.author?.manufacturer_profiles?.[0] || data.author?.designer_profiles?.[0],
+    author: data.author?.manufacturer_profiles || data.author?.designer_profiles,
     author_id: data.author?.id,
   };
 
