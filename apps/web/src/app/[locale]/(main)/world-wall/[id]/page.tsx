@@ -12,6 +12,31 @@ interface Comment {
   author_name: string;
   author_role: string;
   is_verified: boolean;
+  avatar_url?: string;
+}
+
+function Avatar({ src, name, size = "md" }: { src?: string; name: string; size?: "sm" | "md" | "lg" }) {
+  const [err, setErr] = useState(false);
+  const initial = (name || "?").charAt(0).toUpperCase();
+  const dim = size === "lg" ? "w-11 h-11" : size === "md" ? "w-9 h-9" : "w-8 h-8";
+  const text = size === "lg" ? "text-base" : size === "sm" ? "text-xs" : "text-sm";
+
+  if (src && !err) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={name}
+        onError={() => setErr(true)}
+        className={`${dim} object-cover border border-ink-600 hover:border-gold/50 transition-colors duration-200 flex-shrink-0`}
+      />
+    );
+  }
+  return (
+    <div className={`${dim} bg-ink-700 border border-ink-600 flex items-center justify-center text-gold font-display font-medium ${text} flex-shrink-0 hover:border-gold/50 transition-colors duration-200`}>
+      {initial}
+    </div>
+  );
 }
 
 export default function PostDetailPage({
@@ -72,7 +97,7 @@ export default function PostDetailPage({
       const c = await res.json();
       setComments((prev) => [
         ...prev,
-        { id: c.id, content: c.content, created_at: c.created_at, author_id: c.author_id, author_name: "You", author_role: "user", is_verified: false },
+        { id: c.id, content: c.content, created_at: c.created_at, author_id: c.author_id, author_name: "你", author_role: "user", is_verified: false },
       ]);
       setCommentCount((n) => n + 1);
       setCommentText("");
@@ -104,7 +129,6 @@ export default function PostDetailPage({
   const isManufacturer = post.author_role === "manufacturer";
   const isVerified = isManufacturer && author?.is_verified;
   const profileHref = `/${locale}/${isManufacturer ? "manufacturers" : "designers"}/${post.author_id}`;
-  const initial = authorName.charAt(0).toUpperCase();
   const dateStr = new Date(post.created_at).toLocaleDateString("en-GB", {
     day: "numeric", month: "long", year: "numeric",
   });
@@ -125,10 +149,8 @@ export default function PostDetailPage({
         <div className="p-7">
           {/* Author */}
           <div className="flex items-center gap-4 mb-6">
-            <Link href={profileHref}>
-              <div className="w-11 h-11 bg-ink-700 border border-ink-600 flex items-center justify-center text-gold font-display font-medium text-base flex-shrink-0 hover:border-gold/50 transition-colors duration-200">
-                {initial}
-              </div>
+            <Link href={profileHref} className="flex-shrink-0">
+              <Avatar src={author?.avatar_url} name={authorName} size="lg" />
             </Link>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
@@ -147,12 +169,6 @@ export default function PostDetailPage({
                 )}
               </div>
             </div>
-            <Link
-              href={`/${locale}/messages?contact=${post.author_id}`}
-              className="text-xs border border-ink-600 text-ink-400 hover:border-gold/40 hover:text-gold px-4 py-2 transition-all duration-200 tracking-wide"
-            >
-              私信
-            </Link>
           </div>
 
           {/* Content */}
@@ -160,10 +176,13 @@ export default function PostDetailPage({
 
           {/* Media */}
           {post.media_urls && post.media_urls.length > 0 && (
-            <div className="grid grid-cols-2 gap-px mb-5">
+            <div className={`gap-px mb-5 ${post.media_urls.length === 1 ? "block" : "grid grid-cols-2"}`}>
               {post.media_urls.map((url, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={i} src={url} alt="" className="w-full h-56 object-cover" />
+                <img key={i} src={url} alt=""
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                  className={`w-full object-cover ${post.media_urls.length === 1 ? "h-72" : "h-56"}`}
+                />
               ))}
             </div>
           )}
@@ -172,10 +191,7 @@ export default function PostDetailPage({
           {post.tags.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-5">
               {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs border border-ink-600 text-ink-400 px-2 py-0.5"
-                >
+                <span key={tag} className="text-xs border border-ink-600 text-ink-400 px-2 py-0.5">
                   #{tag}
                 </span>
               ))}
@@ -191,11 +207,11 @@ export default function PostDetailPage({
               }`}
             >
               <Heart className={`w-4 h-4 ${liked ? "fill-current" : ""}`} />
-              <span>{likeCount} {likeCount === 1 ? "赞" : "赞"}</span>
+              <span>{likeCount} 赞</span>
             </button>
             <span className="flex items-center gap-2 text-sm text-ink-500">
               <MessageCircle className="w-4 h-4" />
-              <span>{commentCount} {commentCount === 1 ? "评论" : "评论"}</span>
+              <span>{commentCount} 评论</span>
             </span>
             <button className="flex items-center gap-2 text-sm text-ink-500 hover:text-gold transition-colors duration-200 ml-auto">
               <Share2 className="w-4 h-4" />
@@ -244,7 +260,6 @@ export default function PostDetailPage({
 }
 
 function CommentItem({ comment, locale }: { comment: Comment; locale: string }) {
-  const initial = comment.author_name.charAt(0).toUpperCase();
   const profileHref = comment.author_role === "manufacturer" || comment.author_role === "designer"
     ? `/${locale}/${comment.author_role === "manufacturer" ? "manufacturers" : "designers"}/${comment.author_id}`
     : "#";
@@ -255,9 +270,7 @@ function CommentItem({ comment, locale }: { comment: Comment; locale: string }) 
   return (
     <div className="flex gap-4">
       <div className="flex-shrink-0">
-        <div className="w-8 h-8 bg-ink-700 border border-ink-600/50 flex items-center justify-center text-gold/70 font-display font-medium text-xs">
-          {initial}
-        </div>
+        <CommentAvatar src={comment.avatar_url} name={comment.author_name} />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1.5">
@@ -272,6 +285,27 @@ function CommentItem({ comment, locale }: { comment: Comment; locale: string }) 
         </div>
         <p className="text-sm text-ink-300 leading-relaxed font-light">{comment.content}</p>
       </div>
+    </div>
+  );
+}
+
+function CommentAvatar({ src, name }: { src?: string; name: string }) {
+  const [err, setErr] = useState(false);
+  const initial = (name || "?").charAt(0).toUpperCase();
+  if (src && !err) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={name}
+        onError={() => setErr(true)}
+        className="w-8 h-8 object-cover border border-ink-600/50 flex-shrink-0"
+      />
+    );
+  }
+  return (
+    <div className="w-8 h-8 bg-ink-700 border border-ink-600/50 flex items-center justify-center text-gold/70 font-display font-medium text-xs flex-shrink-0">
+      {initial}
     </div>
   );
 }
